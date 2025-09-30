@@ -12,7 +12,7 @@ from typing import List, Optional
 
 from database import Base, get_db
 
-# --- SQLAlchemy Model ---
+
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
@@ -20,7 +20,7 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
 
-# --- Pydantic Schemas ---
+
 class UserCreate(BaseModel):
     username: str
     email: str
@@ -39,7 +39,7 @@ class UserOut(BaseModel):
     class Config:
         orm_mode = True
 
-# Secret key & algorithm (keep secret & use env variable in production)
+
 SECRET_KEY = "your_secret_key_here"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
@@ -48,7 +48,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/login")
 
 
-# ------------------- Password Utils -------------------
+
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
@@ -56,7 +56,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
 
-# ------------------- JWT Utils -------------------
+
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
     to_encode = data.copy()
     expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
@@ -64,7 +64,6 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
-# ------------------- Auth Dependency -------------------
 def get_current_user(
     token: str = Depends(oauth2_scheme),
     db: Session = Depends(get_db)

@@ -11,7 +11,7 @@ from users.Auth import User, UserCreate, UserOut, UserUpdate, hash_password, ver
 
 router = APIRouter(tags=["Users"])
 
-# --- Register User ---
+
 @router.post("/users/register", response_model=UserOut)
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
     existing = db.query(User).filter(
@@ -30,7 +30,6 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     db.refresh(new_user)
     return new_user
 
-# --- Login User ---
 @router.post("/users/login")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == form_data.username).first()
@@ -44,17 +43,16 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
-# --- Get All Users (protected) ---
+
 @router.get("/users/", response_model=List[UserOut])
 def list_users(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     return db.query(User).all()
 
-# --- Get Current User ---
+
 @router.get("/users/me", response_model=UserOut)
 def get_me(current_user: User = Depends(get_current_user)):
     return current_user
 
-# --- Update User (self only) ---
 @router.put("/users/me", response_model=UserOut)
 def update_user(
     data: UserUpdate,
@@ -72,7 +70,7 @@ def update_user(
     db.refresh(current_user)
     return current_user
 
-# --- Delete User (self only) ---
+
 @router.delete("/users/me")
 def delete_user(
     db: Session = Depends(get_db),

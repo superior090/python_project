@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 import os
 from typing import Optional, Dict, Any
 
-# Load environment variables
 load_dotenv()
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

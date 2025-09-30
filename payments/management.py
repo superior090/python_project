@@ -9,31 +9,21 @@ load_dotenv()
 
 router = APIRouter(prefix="/payments", tags=["Payments"])
 
-# -------------------------------
-# Paystack Config
-# -------------------------------
+
 PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
 PAYSTACK_BASE_URL = "https://api.paystack.co"
 
 if not PAYSTACK_SECRET_KEY:
     raise RuntimeError("PAYSTACK_SECRET_KEY environment variable is not set!")
 
-# -------------------------------
-# Circuit Breaker
-# -------------------------------
+
 breaker = CircuitBreaker(fail_max=3, reset_timeout=60)
 
-# -------------------------------
-# Schemas
-# -------------------------------
+
 class PaymentInit(BaseModel):
     email: str
-    amount: int  # amount in kobo
+    amount: int  
 
-
-# -------------------------------
-# Endpoints
-# -------------------------------
 @router.post("/initiate")
 async def initiate_payment(data: PaymentInit):
     """

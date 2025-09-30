@@ -1,10 +1,12 @@
+from typing import Generator
 from sqlalchemy.orm import Session
 from database import SessionLocal
 
-# Dependency to get DB session
-def get_db() -> Session:
+
+def get_db() -> Generator[Session, None, None]:
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
+
