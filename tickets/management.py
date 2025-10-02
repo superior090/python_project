@@ -6,6 +6,7 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
+
 from database import get_db
 from users.auth import get_current_user, User
 from tickets.models import Ticket
@@ -49,7 +50,7 @@ async def purchase_ticket(
     return StreamingResponse(buffer, media_type="image/png")
 
 
-
+# 👇 Add your "mine" endpoint here
 @router.get("/mine")
 def my_tickets(
     db: Session = Depends(get_db),

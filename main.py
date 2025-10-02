@@ -12,3 +12,5 @@ app = FastAPI(title="Ticketing System")
 
 app.include_router(payments_router)
 app.include_router(tickets_router)
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
