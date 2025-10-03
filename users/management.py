@@ -45,7 +45,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
 
 
 @router.get("/users/", response_model=List[UserOut])
-def list_users(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+def list_users(db: Session = Depends(get_db)): #current_user: User = Depends(get_current_user)):
     return db.query(User).all()
 
 
