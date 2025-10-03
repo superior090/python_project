@@ -1,8 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
+import os 
 
-DATABASE_URL = "sqlite:///./ticketing.db"
+#DATABASE_URL = "sqlite:///./ticketing.db"
+
+DATABASE_URL = f"sqlite:///{os.path.join(os.getcwd(), 'ticketing.db')}"
 
 
 engine = create_engine(
